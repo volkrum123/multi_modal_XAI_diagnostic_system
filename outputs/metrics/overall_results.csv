@@ -1,0 +1,5 @@
+experiment,description,split,threshold,accuracy,precision,recall,specificity,f1,roc_auc,pr_auc,mean_activation,central_mean_activation,central_activation_ratio,reviewer_agreement_rate,reviewer_accuracy,model_errors,model_errors_overridden,model_errors_corrected
+E1,Image-only DenseNet-121,test,0.75,0.909822003002359,0.0982961992136304,0.3289473684210526,0.924378984392174,0.1513622603430877,0.7775253284893923,0.0862487409154025,,,,,,,,
+E2,Multi-modal DenseNet-121 + metadata,test,0.75,0.9238687540210164,0.1112903225806451,0.3026315789473684,0.9394372389536162,0.1627358490566037,0.7815290038682109,0.0857975828326758,,,,,,,,
+E3,Grad-CAM XAI analysis,test,0.75,,,,,,,,0.22095700958743686,0.28501648461678997,0.19765354099217802,,,,,
+E4,Human-in-the-Loop review,test,0.75,0.5,,,,,,,,,,0.5,1.0,2.0,2.0,2.0

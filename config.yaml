@@ -1,0 +1,28 @@
+seed: 42
+
+data:
+  root: data
+  manifest: data/processed/nih_pneumonia_manifest.csv
+  image_size: 224
+  num_workers: 0
+
+model:
+  backbone: densenet121
+  pretrained: true
+  metadata_dim: 3
+  image_embedding_dim: 256
+  metadata_embedding_dim: 32
+  dropout: 0.30
+
+training:
+  batch_size: 16
+  epochs: 5
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  freeze_backbone_epochs: 1
+  threshold: 0.75
+
+output:
+  checkpoint: outputs/checkpoints/e2_multimodal.pt
+  metrics: outputs/metrics/metrics.csv
+  feedback: outputs/feedback/feedback.csv

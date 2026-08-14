@@ -1,0 +1,5 @@
+path,target,probability,prediction,category,age,sex,view
+C:\Users\stiaa\OneDrive\Documents\Studies\Belgium\DST 481\Assignment3\multi_modal_xai_pneumonia_dsr_framework\pneumonia_dsr_framework\data\raw\images\00020408_014.png,1,0.9388298392295837,1,TP,44.999998807907104,M,AP
+C:\Users\stiaa\OneDrive\Documents\Studies\Belgium\DST 481\Assignment3\multi_modal_xai_pneumonia_dsr_framework\pneumonia_dsr_framework\data\raw\images\00009641_000.png,0,0.0015902944141998887,0,TN,23.999999463558197,M,AP
+C:\Users\stiaa\OneDrive\Documents\Studies\Belgium\DST 481\Assignment3\multi_modal_xai_pneumonia_dsr_framework\pneumonia_dsr_framework\data\raw\images\00027427_004.png,0,0.9569762945175171,1,FP,56.00000023841858,M,PA
+C:\Users\stiaa\OneDrive\Documents\Studies\Belgium\DST 481\Assignment3\multi_modal_xai_pneumonia_dsr_framework\pneumonia_dsr_framework\data\raw\images\00003535_025.png,1,0.007444288115948439,0,FN,15.000000596046448,F,AP
