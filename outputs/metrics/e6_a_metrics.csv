@@ -1,0 +1,2 @@
+experiment,preprocessing,model,epoch,training_samples,validation_samples,train_loss,accuracy,precision,recall,sensitivity,specificity,f1,roc_auc,pr_auc,tn,fp,fn,tp
+E6-A,baseline,Multi-modal DenseNet-121,1,500,9446,1.3264410141855478,0.977980097395723,0.0,0.0,0.0,1.0,0.0,0.5746290405848752,0.0363533130287793,9238,0,208,0
