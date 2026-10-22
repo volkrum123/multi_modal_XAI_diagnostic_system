@@ -1,0 +1,73 @@
+{
+  "best_epoch": 5,
+  "best_val_auc": 0.8046171124285976,
+  "checkpoint": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\outputs\\checkpoints\\e7_resnet50_multimodal.pt",
+  "checkpoint_sha256": "827AB46714CA26C514E23D11E360A81CD20E193CA5482DA05C060BE73C19AAE8",
+  "command": [
+    "C:\\Users\\stiaa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\src\\train_e7.py",
+    "--config",
+    "config_e7.yaml"
+  ],
+  "completed_at_utc": "2026-10-21T22:05:12.706846+00:00",
+  "config": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\config_e7.yaml",
+  "config_sha256": "49D693407585812F0A8AF2918D3CA86483F2DE95725B3876EBBF80E9DECD5415",
+  "environment": {
+    "cuda_available": false,
+    "cuda_version": null,
+    "cudnn_version": null,
+    "device": "cpu",
+    "device_name": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.13.0+cpu",
+    "torchvision": "0.28.0+cpu"
+  },
+  "experiment": "E7",
+  "git_commit": "ee319426fe668228afcc313df04a84e524b70860",
+  "git_status": [
+    " M README.md",
+    " M src/dataset.py",
+    "?? config_e7.yaml",
+    "?? src/evaluate_e7.py",
+    "?? src/resnet_model.py",
+    "?? src/train_e7.py",
+    "?? tests/"
+  ],
+  "image_inventory": {
+    "ambiguous_manifest_images": 0,
+    "image_root": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\data\\raw\\images",
+    "inventory_png_files": 112120,
+    "manifest_images_resolved": 61792,
+    "missing_manifest_images": 0
+  },
+  "last_completed_epoch": 5,
+  "manifest": {
+    "manifest": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\data\\processed\\nih_pneumonia_manifest.csv",
+    "manifest_sha256": "C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324",
+    "patients": 25052,
+    "positive_counts": {
+      "test": 228,
+      "train": 995,
+      "val": 208
+    },
+    "rows": 61792,
+    "split_counts": {
+      "test": 9326,
+      "train": 43020,
+      "val": 9446
+    }
+  },
+  "seed": 42,
+  "source_sha256": {
+    "config_e7.yaml": "49D693407585812F0A8AF2918D3CA86483F2DE95725B3876EBBF80E9DECD5415",
+    "src/dataset.py": "E6FBC90CE87DA3302D84B4F5998C140FB791C8F2775FEFA12F7D841340A47778",
+    "src/resnet_model.py": "9EC1C9AE84844D253CD30683B5BCF9CC3BDC344B3115BB769E3546313ECE3F6A",
+    "src/train_e7.py": "A4D5D6F6E8B337112CE6231ABF6FEB557D55ED049E1FD9E2ABE7BB20E9770B78",
+    "src/utils.py": "0A38E8015F933A834A25008D5110D06C4C693DC41162DDD583EBF8FBF26145AA"
+  },
+  "started_at_utc": "2026-10-21T05:01:37.074746+00:00",
+  "status": "complete",
+  "training_metrics": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\outputs\\metrics\\e7_resnet50_training_metrics.csv",
+  "training_metrics_sha256": "1C1B0C909998F58985EEC90687911FD7C4E9920A413E171039DFB5007CEDE711"
+}

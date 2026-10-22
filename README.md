@@ -411,3 +411,43 @@ The framework code is released under the MIT License.
 The NIH ChestX-ray14 dataset remains subject to the terms and conditions of its dataset provider. The repository license does not grant redistribution rights for the dataset.
 
 
+
+E7 — ResNet-50 single-model evaluation
+
+
+
+E7 adds a metadata-fused ResNet-50 comparison while preserving E1-E6. It uses the same processed manifest, patient split, image size, age/sex/view metadata, class weighting and core training policy as E2. Baseline preprocessing is fixed for E7; CLAHE and perturbation robustness remain E9 scope.
+
+
+
+The E7 protocol is defined in `config_e7.yaml`. Its repository-relative `data.image_root` resolves the unchanged manifest filenames against the current `data/raw/images/images-###` folders, so a moved checkout does not depend on stale absolute manifest paths. Its outputs use E7-specific filenames and do not overwrite the retained E1-E6 checkpoints or metrics.
+
+
+
+Run the contract checks before training:
+
+`python -m unittest discover -s tests -p "test_e7_contracts.py"`
+
+
+
+Training is deliberately user-started because a full run may take hours:
+
+`python -m src.train_e7 --config config_e7.yaml`
+
+
+
+After training, validation inference selects and locks the classification threshold using validation F1 only:
+
+`python -m src.evaluate_e7 --config config_e7.yaml --split val`
+
+
+
+Only after the validation threshold artefact has been reviewed should the held-out test evaluation be run:
+
+`python -m src.evaluate_e7 --config config_e7.yaml --split test`
+
+
+
+E7 retains per-image validation and test probabilities under `outputs/predictions/` so later paired analysis and the E8 DenseNet-121 plus ResNet-50 ensemble can use aligned predictions. E7 remains a binary, single-dataset research experiment and is not clinical validation.
+
+

@@ -1,0 +1,73 @@
+{
+  "experiment": {
+    "id": "E7",
+    "name": "ResNet-50 single-model evaluation"
+  },
+  "seed": 42,
+  "data": {
+    "manifest": "data/processed/nih_pneumonia_manifest.csv",
+    "image_root": "data/raw/images",
+    "manifest_sha256": "C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324",
+    "image_size": 224,
+    "num_workers": 0,
+    "preprocessing": "baseline",
+    "expected_split_counts": {
+      "train": 43020,
+      "val": 9446,
+      "test": 9326
+    }
+  },
+  "model": {
+    "backbone": "resnet50",
+    "pretrained": true,
+    "metadata_dim": 3,
+    "image_embedding_dim": 256,
+    "metadata_embedding_dim": 32,
+    "dropout": 0.30
+  },
+  "training": {
+    "batch_size": 16,
+    "epochs": 5,
+    "learning_rate": 0.0001,
+    "weight_decay": 0.0001,
+    "freeze_backbone_epochs": 1,
+    "validation_monitor_threshold": 0.50,
+    "checkpoint_metric": "roc_auc",
+    "deterministic": true
+  },
+  "threshold_selection": {
+    "split": "val",
+    "metric": "f1",
+    "tie_break": "lowest_threshold",
+    "grid": [
+      0.10,
+      0.15,
+      0.20,
+      0.25,
+      0.30,
+      0.35,
+      0.40,
+      0.45,
+      0.50,
+      0.55,
+      0.60,
+      0.65,
+      0.70,
+      0.75,
+      0.80,
+      0.85,
+      0.90
+    ]
+  },
+  "output": {
+    "checkpoint": "outputs/checkpoints/e7_resnet50_multimodal.pt",
+    "training_metrics": "outputs/metrics/e7_resnet50_training_metrics.csv",
+    "run_metadata": "outputs/metrics/e7_resnet50_run_metadata.json",
+    "val_predictions": "outputs/predictions/e7_resnet50_val_predictions.csv",
+    "val_metrics": "outputs/metrics/e7_resnet50_val_metrics.csv",
+    "threshold_analysis": "outputs/metrics/e7_resnet50_val_threshold_analysis.csv",
+    "locked_threshold": "outputs/metrics/e7_resnet50_locked_threshold.json",
+    "test_predictions": "outputs/predictions/e7_resnet50_test_predictions.csv",
+    "test_metrics": "outputs/metrics/e7_resnet50_test_metrics.csv"
+  }
+}

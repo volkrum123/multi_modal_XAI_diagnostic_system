@@ -17,6 +17,7 @@ class NIHPneumoniaDataset(Dataset):
         image_size=224,
         augment=False,
         preprocessing="baseline",
+        image_root=None,
     ):
         df = pd.read_csv(manifest)
 
@@ -25,6 +26,17 @@ class NIHPneumoniaDataset(Dataset):
         ].reset_index(drop=True)
 
         self.preprocessing = preprocessing
+        self.image_root = (
+            Path(image_root).resolve()
+            if image_root is not None
+            else None
+        )
+        self._resolved_paths = {}
+
+        if self.image_root is not None and not self.image_root.is_dir():
+            raise FileNotFoundError(
+                f"Image root not found: {self.image_root}"
+            )
 
         if preprocessing not in [
             "baseline",
@@ -87,6 +99,60 @@ class NIHPneumoniaDataset(Dataset):
     def __len__(self):
         return len(self.df)
 
+    def resolve_image_path(self, manifest_path):
+        """Resolve a manifest path, optionally against a portable image root."""
+
+        cache_key = str(manifest_path)
+
+        if cache_key in self._resolved_paths:
+            return self._resolved_paths[cache_key]
+
+        path = Path(cache_key)
+
+        if path.is_file():
+            resolved = path
+
+        else:
+            if self.image_root is not None:
+                direct_candidate = self.image_root / path.name
+                candidates = (
+                    [direct_candidate]
+                    if direct_candidate.is_file()
+                    else list(
+                        self.image_root.glob(
+                            f"*/{path.name}"
+                        )
+                    )
+                )
+            else:
+                candidates = list(
+                    path.parent.glob(
+                        f"*/{path.name}"
+                    )
+                )
+
+            candidates = [
+                candidate
+                for candidate in candidates
+                if candidate.is_file()
+            ]
+
+            if not candidates:
+                raise FileNotFoundError(
+                    f"Image not found: {manifest_path}"
+                )
+
+            if len(candidates) > 1:
+                raise RuntimeError(
+                    "Image filename is not unique under the configured root: "
+                    f"{path.name}"
+                )
+
+            resolved = candidates[0]
+
+        self._resolved_paths[cache_key] = resolved
+        return resolved
+
     def apply_clahe(self, image):
         """
         Apply CLAHE to the luminance channel
@@ -117,26 +183,9 @@ class NIHPneumoniaDataset(Dataset):
 
         row = self.df.iloc[idx]
 
-        path = Path(
+        path = self.resolve_image_path(
             row["image_path"]
         )
-
-        if not path.exists():
-
-            candidates = list(
-                path.parent.glob(
-                    f"*/{path.name}"
-                )
-            )
-
-            if candidates:
-                path = candidates[0]
-
-            else:
-                raise FileNotFoundError(
-                    f"Image not found: "
-                    f"{row['image_path']}"
-                )
 
         image = Image.open(
             path
