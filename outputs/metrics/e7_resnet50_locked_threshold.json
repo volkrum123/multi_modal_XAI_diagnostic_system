@@ -1,0 +1,30 @@
+{
+  "checkpoint_sha256": "827AB46714CA26C514E23D11E360A81CD20E193CA5482DA05C060BE73C19AAE8",
+  "config_sha256": "49D693407585812F0A8AF2918D3CA86483F2DE95725B3876EBBF80E9DECD5415",
+  "experiment": "E7",
+  "manifest_sha256": "C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324",
+  "model": "Multi-modal ResNet-50 + metadata",
+  "selected_at_utc": "2026-10-22T04:47:31.581756+00:00",
+  "selected_metrics": {
+    "accuracy": 0.9257886936269321,
+    "f1": 0.16448152562574495,
+    "fn": 139.0,
+    "fp": 562.0,
+    "pr_auc": 0.08494491827617406,
+    "precision": 0.10935023771790808,
+    "recall": 0.3317307692307692,
+    "roc_auc": 0.8046171124285976,
+    "sensitivity": 0.3317307692307692,
+    "specificity": 0.9391643212816627,
+    "threshold": 0.85,
+    "tn": 8676.0,
+    "tp": 69.0
+  },
+  "selection_metric": "f1",
+  "selection_split": "val",
+  "threshold": 0.85,
+  "threshold_analysis_sha256": "FB565AA1F0AE2FFD1A43FD3DB1A0374EC293332E7CA39AFA8007171560E5F25F",
+  "tie_break": "lowest_threshold",
+  "validation_metrics_sha256": "F5908573F599011E38394CDF72A95EEBB56E6313FC49FC97D09BC12F742BD49F",
+  "validation_predictions_sha256": "AA84B06B2D953A21BCCBCC466431CCCAB85A0690A39C115C17DDED1549443CD5"
+}

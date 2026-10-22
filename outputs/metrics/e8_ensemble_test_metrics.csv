@@ -1,0 +1,2 @@
+experiment,model,split,n,positive_n,negative_n,threshold,accuracy,precision,recall,sensitivity,specificity,f1,roc_auc,pr_auc,tn,fp,fn,tp
+E8,DenseNet-121 + ResNet-50 equal-weight ensemble,test,9326,228,9098,0.8,0.9341625562942312,0.0995850622406639,0.21052631578947367,0.21052631578947367,0.9522972081776214,0.1352112676056338,0.7782846046750203,0.08723164267738984,8664,434,180,48

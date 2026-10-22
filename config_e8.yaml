@@ -1,0 +1,110 @@
+experiment:
+  id: E8
+  name: DenseNet-121 plus ResNet-50 equal-weight ensemble
+
+seed: 42
+
+data:
+  manifest: data/processed/nih_pneumonia_manifest.csv
+  image_root: data/raw/images
+  manifest_sha256: C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324
+  image_size: 224
+  num_workers: 0
+  batch_size: 16
+  preprocessing: baseline
+  expected_split_counts:
+    train: 43020
+    val: 9446
+    test: 9326
+  expected_positive_counts:
+    train: 995
+    val: 208
+    test: 228
+
+densenet:
+  experiment: E2
+  model_name: Multi-modal DenseNet-121 + metadata
+  checkpoint: outputs/checkpoints/e2_multimodal.pt
+  checkpoint_sha256: BFE5CB453775C62EAC81B09D746E2E42AB184CF71D4C991ED632BC1A9DC8DCF2
+  model_source: src/model.py
+  model_source_sha256: 19B5699CA413A621D08895BDAB4135E5E577A4466BBF014A4C8BCCF38B919953
+  metadata_dim: 3
+  image_embedding_dim: 256
+  metadata_embedding_dim: 32
+  dropout: 0.30
+  selected_threshold: 0.75
+  best_validation_roc_auc: 0.7982179584325613
+  validation_threshold_analysis: outputs/metrics/e2_val_threshold_analysis.csv
+  validation_threshold_analysis_sha256: 0C8E178815C028C8994304681F88AE54B7DC407B34F7FFC152F06BD9A22AC089
+  expected_test_metrics:
+    accuracy: 0.9238687540210164
+    precision: 0.1112903225806451
+    sensitivity: 0.3026315789473684
+    specificity: 0.9394372389536162
+    f1: 0.1627358490566037
+    roc_auc: 0.7815290038682109
+    pr_auc: 0.0857975828326758
+    tn: 8547
+    fp: 551
+    fn: 159
+    tp: 69
+
+resnet:
+  experiment: E7
+  model_name: Multi-modal ResNet-50 + metadata
+  checkpoint_sha256: 827AB46714CA26C514E23D11E360A81CD20E193CA5482DA05C060BE73C19AAE8
+  config_sha256: 49D693407585812F0A8AF2918D3CA86483F2DE95725B3876EBBF80E9DECD5415
+  selected_threshold: 0.85
+  locked_threshold: outputs/metrics/e7_resnet50_locked_threshold.json
+  locked_threshold_sha256: 407C17EA9CBB8598F58529D8350896F2C0D860A1EDAEF49B024F740E69D73A37
+  val_predictions: outputs/predictions/e7_resnet50_val_predictions.csv
+  val_predictions_sha256: AA84B06B2D953A21BCCBCC466431CCCAB85A0690A39C115C17DDED1549443CD5
+  test_predictions: outputs/predictions/e7_resnet50_test_predictions.csv
+  test_predictions_sha256: 8030834FC2A91930E42813E04CDDE8AC3A9F809325C9C37CBC8162DE588B1ED5
+
+fusion:
+  method: equal_weight_probability_average
+  densenet_weight: 0.50
+  resnet_weight: 0.50
+
+threshold_selection:
+  split: val
+  metric: f1
+  tie_break: lowest_threshold
+  grid:
+    - 0.10
+    - 0.15
+    - 0.20
+    - 0.25
+    - 0.30
+    - 0.35
+    - 0.40
+    - 0.45
+    - 0.50
+    - 0.55
+    - 0.60
+    - 0.65
+    - 0.70
+    - 0.75
+    - 0.80
+    - 0.85
+    - 0.90
+
+integrity:
+  numeric_tolerance: 0.000001
+  dataset_source: src/dataset.py
+  dataset_source_sha256: E6FBC90CE87DA3302D84B4F5998C140FB791C8F2775FEFA12F7D841340A47778
+
+output:
+  densenet_val_predictions: outputs/predictions/e8_densenet_val_predictions.csv
+  densenet_val_metrics: outputs/metrics/e8_densenet_val_metrics.csv
+  ensemble_val_predictions: outputs/predictions/e8_ensemble_val_predictions.csv
+  ensemble_val_metrics: outputs/metrics/e8_ensemble_val_metrics.csv
+  ensemble_val_threshold_analysis: outputs/metrics/e8_ensemble_val_threshold_analysis.csv
+  locked_threshold: outputs/metrics/e8_locked_threshold.json
+  densenet_test_predictions: outputs/predictions/e8_densenet_test_predictions.csv
+  densenet_test_metrics: outputs/metrics/e8_densenet_test_metrics.csv
+  ensemble_test_predictions: outputs/predictions/e8_ensemble_test_predictions.csv
+  ensemble_test_metrics: outputs/metrics/e8_ensemble_test_metrics.csv
+  model_comparison: outputs/metrics/e8_model_comparison.csv
+

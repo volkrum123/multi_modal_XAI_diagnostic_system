@@ -451,3 +451,105 @@ Only after the validation threshold artefact has been reviewed should the held-o
 E7 retains per-image validation and test probabilities under `outputs/predictions/` so later paired analysis and the E8 DenseNet-121 plus ResNet-50 ensemble can use aligned predictions. E7 remains a binary, single-dataset research experiment and is not clinical validation.
 
 
+
+E8 — DenseNet-121 plus ResNet-50 ensemble evaluation
+
+
+
+E8 performs inference only; it does not train or fine-tune either model. It regenerates aligned E2 DenseNet-121 probabilities and combines them with the retained E7 ResNet-50 probabilities using the pre-specified rule:
+
+`ensemble probability = (0.5 * DenseNet probability) + (0.5 * ResNet probability)`
+
+
+
+Run the non-inference contract checks first:
+
+`py -m unittest discover -s tests -p "test_e8_contracts.py" -v`
+
+
+
+The validation stage reproduces the historical E2 validation evidence, aligns both models by unique image ID and target, and locks the E8 threshold using validation F1 only:
+
+`py -m src.evaluate_e8 --config config_e8.yaml --stage val`
+
+
+
+Only after reviewing the validation lock should the test stage be run once:
+
+`py -m src.evaluate_e8 --config config_e8.yaml --stage test`
+
+
+
+All E8 outputs use isolated `e8_*` filenames. The evaluator refuses existing outputs and refuses test execution without a hash-matched validation lock. E2 retains threshold 0.75, E7 retains threshold 0.85, and E8 uses its own validation-selected threshold. The comparison remains binary, retrospective, single-dataset research evidence and does not establish multi-class or clinical performance.
+
+
+
+E9 — Baseline-versus-CLAHE robustness and feature stability
+
+
+
+E9 compares the existing baseline preprocessing pipeline with CLAHE across DenseNet-121, ResNet-50 and their equal-weight probability ensemble. In this experiment, “baseline” means the existing resize, tensor conversion and ImageNet normalization pipeline without CLAHE; it does not mean untouched detector data. ICEA is not implemented and remains an explicit limitation.
+
+
+
+The retained E2 checkpoint supplies the baseline DenseNet arm. E6-A is verified as an exact duplicate of E2 and is not retrained. The retained E6-B checkpoint supplies the CLAHE DenseNet arm, and E7 supplies the baseline ResNet arm. Only the matching CLAHE ResNet-50 requires new five-epoch training.
+
+
+
+Run the E9 contract checks first:
+
+`py -m unittest discover -s tests -p "test_e9_contracts.py" -v`
+
+
+
+Training is deliberately user-started because the CPU run may take many hours:
+
+`py -m src.train_e9 --config config_e9.yaml`
+
+
+
+After training, regenerate the retained E6-B validation result and lock separate CLAHE thresholds for DenseNet, ResNet and the equal-weight ensemble using validation F1 only:
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage val`
+
+
+
+Run the clean held-out test condition first. This must reproduce the retained E2, E7 and E8 baseline probabilities before it creates the clean feature reference:
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition clean`
+
+
+
+Then run each deterministic perturbation separately so completion and evidence are recoverable:
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition brightness_low`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition brightness_high`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition contrast_low`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition contrast_high`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition gamma_low`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition gamma_high`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition gaussian_noise`
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage condition --condition gaussian_blur`
+
+
+
+After all nine conditions are complete and their hashes validate, calculate point estimates and 1,000 paired, stratified bootstrap intervals:
+
+`py -m src.evaluate_e9 --config config_e9.yaml --stage summarize`
+
+
+
+Perturbations are applied deterministically to the source RGB image before the baseline or CLAHE arm. Feature stability uses the 256-dimensional post-ReLU `image_projection` representation, before metadata fusion. Ensemble feature stability is reported only as the mean of the two component-model stability values and is labelled as a proxy, because probability fusion has no learned ensemble feature vector. Thresholds are locked on clean validation data and never retuned on perturbed test conditions.
+
+
+
+E9 remains a retrospective, binary, single-dataset robustness experiment. It does not establish robustness to external institutions, scanners or populations, does not compare ICEA, and does not constitute clinical validation.
+
+

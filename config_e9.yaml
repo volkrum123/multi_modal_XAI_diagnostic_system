@@ -1,0 +1,181 @@
+experiment:
+  id: E9
+  name: Baseline versus CLAHE robustness and feature stability
+
+seed: 42
+
+data:
+  manifest: data/processed/nih_pneumonia_manifest.csv
+  image_root: data/raw/images
+  manifest_sha256: C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324
+  dataset_source: src/dataset.py
+  dataset_source_sha256: E6FBC90CE87DA3302D84B4F5998C140FB791C8F2775FEFA12F7D841340A47778
+  image_size: 224
+  num_workers: 0
+  batch_size: 16
+  expected_split_counts:
+    train: 43020
+    val: 9446
+    test: 9326
+  expected_positive_counts:
+    train: 995
+    val: 208
+    test: 228
+
+preprocessing:
+  baseline:
+    name: baseline
+  clahe:
+    name: clahe
+    clip_limit: 2.0
+    tile_grid_size: [8, 8]
+
+models:
+  baseline_densenet:
+    experiment: E2
+    model_name: Multi-modal DenseNet-121 + metadata
+    checkpoint: outputs/checkpoints/e2_multimodal.pt
+    checkpoint_sha256: BFE5CB453775C62EAC81B09D746E2E42AB184CF71D4C991ED632BC1A9DC8DCF2
+    duplicate_checkpoint: outputs/checkpoints/e6_a_multimodal.pt
+    duplicate_checkpoint_sha256: A2BBB78E09A69C8C052DDCAF29E4DF8E67E0E9EF6177EB8D89DCEE1E52C82684
+    threshold: 0.75
+    test_predictions: outputs/predictions/e8_densenet_test_predictions.csv
+    test_predictions_sha256: 4C2CB090E647A2D0C0CFDE25551497554B5CCE0E13C2583B8975E631840A65F1
+  clahe_densenet:
+    experiment: E6-B
+    model_name: Multi-modal DenseNet-121 + metadata, CLAHE
+    checkpoint: outputs/checkpoints/e6_b_multimodal.pt
+    checkpoint_sha256: F4A2765A12B4746EEE4D118062FE88F32AB1DD0FA2B4C6223BDB758A067C7757
+    training_metrics: outputs/metrics/e6_b_metrics.csv
+    training_metrics_sha256: E09B8F05CCBBFA42BC76707C04C23AFD664D7BCE94BB15EDD8F401F0EE73DDCA
+    expected_best_validation_roc_auc: 0.7846155927856513
+    historical_monitor_threshold: 0.50
+    expected_historical_validation:
+      accuracy: 0.7504763921236502
+      precision: 0.05981155264235969
+      sensitivity: 0.7019230769230769
+      specificity: 0.7515696038103485
+      f1: 0.11023027557568894
+      roc_auc: 0.7846155927856513
+      pr_auc: 0.07384427012972136
+      tn: 6943
+      fp: 2295
+      fn: 62
+      tp: 146
+  baseline_resnet:
+    experiment: E7
+    model_name: Multi-modal ResNet-50 + metadata
+    checkpoint: outputs/checkpoints/e7_resnet50_multimodal.pt
+    checkpoint_sha256: 827AB46714CA26C514E23D11E360A81CD20E193CA5482DA05C060BE73C19AAE8
+    threshold: 0.85
+    threshold_lock: outputs/metrics/e7_resnet50_locked_threshold.json
+    threshold_lock_sha256: 407C17EA9CBB8598F58529D8350896F2C0D860A1EDAEF49B024F740E69D73A37
+    test_predictions: outputs/predictions/e7_resnet50_test_predictions.csv
+    test_predictions_sha256: 8030834FC2A91930E42813E04CDDE8AC3A9F809325C9C37CBC8162DE588B1ED5
+  clahe_resnet:
+    experiment: E9
+    model_name: Multi-modal ResNet-50 + metadata, CLAHE
+    checkpoint: outputs/checkpoints/e9_resnet50_clahe.pt
+  baseline_ensemble:
+    experiment: E8
+    model_name: DenseNet-121 + ResNet-50 equal-weight ensemble
+    threshold: 0.80
+    threshold_lock: outputs/metrics/e8_locked_threshold.json
+    threshold_lock_sha256: 765F8547769764805835FB024132E4FA9CF20375B3EF0ABA051C5B400E8ED440
+    test_predictions: outputs/predictions/e8_ensemble_test_predictions.csv
+    test_predictions_sha256: B8BE63F5241F0DA994E0EEED99021190C035FCC40BF0AB0DD13B0B266AF58CBB
+
+model_architecture:
+  densenet_source: src/model.py
+  densenet_source_sha256: 19B5699CA413A621D08895BDAB4135E5E577A4466BBF014A4C8BCCF38B919953
+  resnet_source: src/resnet_model.py
+  resnet_source_sha256: 9EC1C9AE84844D253CD30683B5BCF9CC3BDC344B3115BB769E3546313ECE3F6A
+  metadata_dim: 3
+  image_embedding_dim: 256
+  metadata_embedding_dim: 32
+  dropout: 0.30
+
+training:
+  batch_size: 16
+  epochs: 5
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  freeze_backbone_epochs: 1
+  validation_monitor_threshold: 0.50
+  checkpoint_metric: roc_auc
+  deterministic: true
+
+fusion:
+  method: equal_weight_probability_average
+  densenet_weight: 0.50
+  resnet_weight: 0.50
+
+threshold_selection:
+  split: val
+  metric: f1
+  tie_break: lowest_threshold
+  grid: [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90]
+
+feature_stability:
+  layer: image_projection_post_relu
+  dimension: 256
+  epsilon: 0.000000000001
+  ensemble_proxy: mean_component_stability
+
+perturbations:
+  clean:
+    kind: clean
+  brightness_low:
+    kind: brightness
+    factor: 0.80
+  brightness_high:
+    kind: brightness
+    factor: 1.20
+  contrast_low:
+    kind: contrast
+    factor: 0.80
+  contrast_high:
+    kind: contrast
+    factor: 1.20
+  gamma_low:
+    kind: gamma
+    gamma: 0.80
+  gamma_high:
+    kind: gamma
+    gamma: 1.20
+  gaussian_noise:
+    kind: gaussian_noise
+    standard_deviation: 0.03
+  gaussian_blur:
+    kind: gaussian_blur
+    radius: 1.0
+
+bootstrap:
+  resamples: 1000
+  confidence_level: 0.95
+  seed: 42
+  stratified: true
+
+integrity:
+  numeric_tolerance: 0.000001
+
+output:
+  checkpoint: outputs/checkpoints/e9_resnet50_clahe.pt
+  training_metrics: outputs/metrics/e9_resnet50_clahe_training_metrics.csv
+  run_metadata: outputs/metrics/e9_resnet50_clahe_run_metadata.json
+  densenet_val_predictions: outputs/predictions/e9_clahe_densenet_val_predictions.csv
+  densenet_val_metrics: outputs/metrics/e9_clahe_densenet_val_metrics.csv
+  densenet_val_threshold_analysis: outputs/metrics/e9_clahe_densenet_val_threshold_analysis.csv
+  resnet_val_predictions: outputs/predictions/e9_clahe_resnet_val_predictions.csv
+  resnet_val_metrics: outputs/metrics/e9_clahe_resnet_val_metrics.csv
+  resnet_val_threshold_analysis: outputs/metrics/e9_clahe_resnet_val_threshold_analysis.csv
+  ensemble_val_predictions: outputs/predictions/e9_clahe_ensemble_val_predictions.csv
+  ensemble_val_metrics: outputs/metrics/e9_clahe_ensemble_val_metrics.csv
+  ensemble_val_threshold_analysis: outputs/metrics/e9_clahe_ensemble_val_threshold_analysis.csv
+  validation_lock: outputs/metrics/e9_clahe_validation_lock.json
+  clean_features: outputs/features/e9_clean_features.npz
+  clean_reference_lock: outputs/metrics/e9_clean_reference_lock.json
+  condition_root: outputs/e9_conditions
+  robustness_summary: outputs/metrics/e9_robustness_summary.csv
+  bootstrap_intervals: outputs/metrics/e9_bootstrap_intervals.csv
+

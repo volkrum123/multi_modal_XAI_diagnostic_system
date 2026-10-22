@@ -1,0 +1,2 @@
+experiment,model,split,n,positive_n,negative_n,threshold,accuracy,precision,recall,sensitivity,specificity,f1,roc_auc,pr_auc,tn,fp,fn,tp
+E2,Multi-modal DenseNet-121 + metadata,test,9326,228,9098,0.75,0.9238687540210165,0.11129032258064517,0.3026315789473684,0.3026315789473684,0.9394372389536162,0.16273584905660377,0.7815290038682109,0.08579758283267587,8547,551,159,69
