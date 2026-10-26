@@ -1,0 +1,89 @@
+{
+  "config_sha256": "FE4D57E81ECFBCA38F2DB2632F90F3F34B66587D777B2A81AC8B254DF1453B2D",
+  "evidence_sha256": {
+    "densenet_metrics": "A53F2C427EBD6FB1F90EA544A5CBEDFD6D0A34BE3C425C327B8465748B02BC82",
+    "densenet_predictions": "710ADF22BD4F43D069D727FACDC70E1A210BDF027B9D9B078BDFF4F819F828EC",
+    "densenet_threshold_analysis": "57CF3D2CBD5257DD8547B802514223F4F15697FD79C8B80023A1F00A58694DE8",
+    "ensemble_metrics": "87798055FC0F2DA69C8D98F110A827690E0630C45D08D5FDCD21322F7246C2CB",
+    "ensemble_predictions": "E15B4A674FC501CB2A0F58A22F4F895CD20D3D66DF0A60405CC513A97A406CA0",
+    "ensemble_threshold_analysis": "24FC9591293D559B446372235E6203CCC10F4462D6CC4F7BFF64EB3FE44A0F41",
+    "resnet_metrics": "C4AA78CDAEC028AC4EC86B2D730E99A6D1FC4C64F1B2D3570F4392AE8EB8B7B8",
+    "resnet_predictions": "064011969F5C655D6F8DD5F44AE7224A19DB77EBF0BD35E6F92FD79A6549726D",
+    "resnet_threshold_analysis": "B96AEFABAE80D81FEBA5895E6D00139B0AA5C78DA5340897887804F22DD0DCF7"
+  },
+  "experiment": "E9",
+  "fusion_method": "equal_weight_probability_average",
+  "input_sha256": {
+    "baseline_densenet": "BFE5CB453775C62EAC81B09D746E2E42AB184CF71D4C991ED632BC1A9DC8DCF2",
+    "baseline_resnet": "827AB46714CA26C514E23D11E360A81CD20E193CA5482DA05C060BE73C19AAE8",
+    "clahe_densenet": "F4A2765A12B4746EEE4D118062FE88F32AB1DD0FA2B4C6223BDB758A067C7757",
+    "clahe_densenet_metrics": "E09B8F05CCBBFA42BC76707C04C23AFD664D7BCE94BB15EDD8F401F0EE73DDCA",
+    "clahe_resnet": "9B2D392BF1DF95CF3B3233899233F194E917A2CFFB159F2421A077E94905F8D5",
+    "dataset_source": "E6FBC90CE87DA3302D84B4F5998C140FB791C8F2775FEFA12F7D841340A47778",
+    "densenet_source": "19B5699CA413A621D08895BDAB4135E5E577A4466BBF014A4C8BCCF38B919953",
+    "duplicate_densenet": "A2BBB78E09A69C8C052DDCAF29E4DF8E67E0E9EF6177EB8D89DCEE1E52C82684",
+    "e7_lock": "407C17EA9CBB8598F58529D8350896F2C0D860A1EDAEF49B024F740E69D73A37",
+    "e8_lock": "765F8547769764805835FB024132E4FA9CF20375B3EF0ABA051C5B400E8ED440",
+    "resnet_source": "9EC1C9AE84844D253CD30683B5BCF9CC3BDC344B3115BB769E3546313ECE3F6A"
+  },
+  "manifest_sha256": "C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324",
+  "selected_at_utc": "2026-10-24T18:04:00.604838+00:00",
+  "selected_metrics": {
+    "densenet": {
+      "accuracy": 0.9082151175100571,
+      "f1": 0.15249266862170088,
+      "fn": 130.0,
+      "fp": 737.0,
+      "pr_auc": 0.07384427012972136,
+      "precision": 0.09570552147239264,
+      "recall": 0.375,
+      "roc_auc": 0.7846155927856513,
+      "sensitivity": 0.375,
+      "specificity": 0.9202208270188352,
+      "threshold": 0.75,
+      "tn": 8501.0,
+      "tp": 78.0
+    },
+    "ensemble": {
+      "accuracy": 0.9158373914884608,
+      "f1": 0.1657922350472193,
+      "fn": 129.0,
+      "fp": 666.0,
+      "pr_auc": 0.08251141859512953,
+      "precision": 0.10604026845637583,
+      "recall": 0.3798076923076923,
+      "roc_auc": 0.8058000399686912,
+      "sensitivity": 0.3798076923076923,
+      "specificity": 0.927906473262611,
+      "threshold": 0.8,
+      "tn": 8572.0,
+      "tp": 79.0
+    },
+    "resnet": {
+      "accuracy": 0.8990048697861529,
+      "f1": 0.1646234676007005,
+      "fn": 114.0,
+      "fp": 840.0,
+      "pr_auc": 0.08492993209885541,
+      "precision": 0.1006423982869379,
+      "recall": 0.4519230769230769,
+      "roc_auc": 0.8009470706280081,
+      "sensitivity": 0.4519230769230769,
+      "specificity": 0.9090712275384283,
+      "threshold": 0.85,
+      "tn": 8398.0,
+      "tp": 94.0
+    }
+  },
+  "selection_metric": "f1",
+  "selection_split": "val",
+  "stage": "clahe_validation_threshold_lock",
+  "thresholds": {
+    "densenet": 0.75,
+    "ensemble": 0.8,
+    "resnet": 0.85
+  },
+  "tie_break": "lowest_threshold",
+  "training_run_metadata": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\outputs\\metrics\\e9_resnet50_clahe_run_metadata.json",
+  "training_run_metadata_sha256": "4755673849CBA4CD718B34EAAB3E35618F2BD99F9E9151726F045089B975C8DA"
+}

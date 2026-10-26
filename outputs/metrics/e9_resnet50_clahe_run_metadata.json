@@ -1,0 +1,61 @@
+{
+  "arm": "clahe_resnet50",
+  "best_epoch": 5,
+  "best_val_auc": 0.8009470706280081,
+  "checkpoint": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\outputs\\checkpoints\\e9_resnet50_clahe.pt",
+  "checkpoint_sha256": "9B2D392BF1DF95CF3B3233899233F194E917A2CFFB159F2421A077E94905F8D5",
+  "command": [
+    "C:\\Users\\stiaa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\src\\train_e9.py",
+    "--config",
+    "config_e9.yaml"
+  ],
+  "completed_at_utc": "2026-10-24T17:43:53.836398+00:00",
+  "config": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\config_e9.yaml",
+  "config_sha256": "FE4D57E81ECFBCA38F2DB2632F90F3F34B66587D777B2A81AC8B254DF1453B2D",
+  "environment": {
+    "cuda_available": false,
+    "cuda_version": null,
+    "cudnn_version": null,
+    "device": "cpu",
+    "device_name": "Intel64 Family 6 Model 186 Stepping 2, GenuineIntel",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "python": "3.13.14 (tags/v3.13.14:fd17997, Jun 10 2026, 13:03:48) [MSC v.1944 64 bit (AMD64)]",
+    "torch": "2.13.0+cpu",
+    "torchvision": "0.28.0+cpu"
+  },
+  "experiment": "E9",
+  "git_commit": "87f43ea250b4dfadf1f614097a6a65531e963385",
+  "git_status": [],
+  "image_inventory": {
+    "ambiguous_manifest_images": 0,
+    "image_root": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\data\\raw\\images",
+    "inventory_png_files": 112120,
+    "manifest_images_resolved": 61792,
+    "missing_manifest_images": 0
+  },
+  "last_completed_epoch": 5,
+  "manifest": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\data\\processed\\nih_pneumonia_manifest.csv",
+  "manifest_sha256": "C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324",
+  "preprocessing": {
+    "clip_limit": 2.0,
+    "name": "clahe",
+    "tile_grid_size": [
+      8,
+      8
+    ]
+  },
+  "seed": 42,
+  "source_sha256": {
+    "config_e9.yaml": "FE4D57E81ECFBCA38F2DB2632F90F3F34B66587D777B2A81AC8B254DF1453B2D",
+    "src/dataset.py": "E6FBC90CE87DA3302D84B4F5998C140FB791C8F2775FEFA12F7D841340A47778",
+    "src/e9_dataset.py": "1B7C8E102C43FF4470495F36870E266DFB10C47D4B7DAB12C389FDE732554D8E",
+    "src/resnet_model.py": "9EC1C9AE84844D253CD30683B5BCF9CC3BDC344B3115BB769E3546313ECE3F6A",
+    "src/train_e9.py": "382EF31E219E03A0DDBD93AEDA882C4EE2D40BAF83285C2306B9C307AA33C741",
+    "src/utils.py": "0A38E8015F933A834A25008D5110D06C4C693DC41162DDD583EBF8FBF26145AA"
+  },
+  "started_at_utc": "2026-10-24T06:47:44.138775+00:00",
+  "status": "complete",
+  "training_metrics": "C:\\Users\\stiaa\\OneDrive\\Documents\\Personal\\Studies\\Belgium\\DST 481\\Assignment3\\multi_modal_xai_pneumonia_dsr_framework\\pneumonia_dsr_framework\\outputs\\metrics\\e9_resnet50_clahe_training_metrics.csv",
+  "training_metrics_sha256": "F087FF67FB60BD7CC5C81DA3E7B5B3D96BADAEC21DFA2678B272E04447322FEF"
+}

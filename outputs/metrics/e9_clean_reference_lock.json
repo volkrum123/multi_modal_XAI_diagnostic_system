@@ -1,0 +1,12 @@
+{
+  "baseline_reproduction": "passed",
+  "clean_features_sha256": "81C91C319628F21F424EFECCDB30C8313A8A3B6C809F92125CD6DD3E12D7EDCF",
+  "condition": "clean",
+  "config_sha256": "FE4D57E81ECFBCA38F2DB2632F90F3F34B66587D777B2A81AC8B254DF1453B2D",
+  "created_at_utc": "2026-10-24T18:40:50.224739+00:00",
+  "experiment": "E9",
+  "feature_dimension": 256,
+  "feature_layer": "image_projection_post_relu",
+  "manifest_sha256": "C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324",
+  "validation_lock_sha256": "C9D1A8A3A024F4BA27C87201360FCC68F115703D34885316A922C6E4F993851E"
+}
