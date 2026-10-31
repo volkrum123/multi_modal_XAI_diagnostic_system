@@ -1,0 +1,17 @@
+{
+  "agree": 3889,
+  "clinical_reviewer": false,
+  "config_sha256": "946C5E765DAF0BD0D895C0E1B964CE429D801BDC6C92BE1708B00C0299A7C867",
+  "created_at_utc": "2026-10-31T06:09:57.563925+00:00",
+  "disagree": 354,
+  "experiment": "E10",
+  "feedback_pool_predictions_sha256": "0FCBC307DFC5843AAA4AC5CD45C107FAC64735C58637F6A3B139A449CD953146",
+  "feedback_source": "simulated_oracle_manifest_label",
+  "localization_feedback": false,
+  "partition_metadata_sha256": "3754927F2E587B4BA3AA74837EBCE3F4EC219B749A20CB78DC5F25B05946A5AE",
+  "pre_checkpoint_sha256": "AFCAF8E964324CCE67910FA5627CFE663FF6BE2B2E6AE576A767988DF1D3A94A",
+  "pre_feedback_lock_sha256": "1D772AB7990278897C1EA4066DB1CBAFB6537EF05D17A35C2603C4278F4B73C4",
+  "records": 4243,
+  "simulated_feedback_sha256": "8C415B8D398AC6AE747769883DFE04D60C5FBE8A23DEC573C63A740FB03C23DF",
+  "stage": "simulated_feedback_lock"
+}

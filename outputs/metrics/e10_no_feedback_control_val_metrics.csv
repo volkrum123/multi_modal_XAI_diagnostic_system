@@ -1,0 +1,2 @@
+experiment,arm,model,split,n,positive_n,negative_n,threshold,accuracy,precision,recall,sensitivity,specificity,f1,roc_auc,pr_auc,tn,fp,fn,tp
+E10,control,No-feedback continued-training control,val,9446,208,9238,0.7,0.890006351894982,0.09224730127576054,0.4519230769230769,0.4519230769230769,0.8998701017536264,0.1532192339038305,0.7930022524022847,0.0706964509448679,8313,925,114,94

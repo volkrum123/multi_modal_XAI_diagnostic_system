@@ -1,0 +1,136 @@
+experiment:
+  id: E10
+  name: Simulated feedback adaptation with continued-training control
+
+seed: 42
+
+data:
+  manifest: data/processed/nih_pneumonia_manifest.csv
+  image_root: data/raw/images
+  manifest_sha256: C209D1DDF149C889325D4A30D191932F72D8EA30E48A64E24EF99B30CC004324
+  dataset_source: src/dataset.py
+  dataset_source_sha256: E6FBC90CE87DA3302D84B4F5998C140FB791C8F2775FEFA12F7D841340A47778
+  image_size: 224
+  num_workers: 0
+  batch_size: 16
+  expected_split_counts:
+    train: 43020
+    val: 9446
+    test: 9326
+  expected_positive_counts:
+    train: 995
+    val: 208
+    test: 228
+
+reference:
+  e2_checkpoint: outputs/checkpoints/e2_multimodal.pt
+  e2_checkpoint_sha256: BFE5CB453775C62EAC81B09D746E2E42AB184CF71D4C991ED632BC1A9DC8DCF2
+  e8_validation_predictions: outputs/predictions/e8_densenet_val_predictions.csv
+  e8_validation_predictions_sha256: 86C2F4BCB5E9B25699C98E0E4163F5C0E6F8DC1BDEDE3E454509E008EE2D020F
+  e4_feedback: outputs/feedback/feedback.csv
+  e4_feedback_sha256: 6A4EB3D2AA3CCEA95BB8213FA5433CFE45C2DD1FA3B58BAE34DF4AB8FEDCA64A
+  e3_cases: outputs/explanations/xai_cases.csv
+  e3_cases_sha256: DEC5A51DBABC342829C17148DFB5514C5E976CA524F43CBA1CC25D91A0F83ED4
+
+model:
+  source: src/model.py
+  source_sha256: 19B5699CA413A621D08895BDAB4135E5E577A4466BBF014A4C8BCCF38B919953
+  backbone: densenet121
+  metadata_dim: 3
+  image_embedding_dim: 256
+  metadata_embedding_dim: 32
+  dropout: 0.30
+  preprocessing: baseline
+
+partition:
+  source_split: train
+  feedback_fraction: 0.10
+  stratify_by_patient_positive: true
+  expected:
+    base_train_patients: 15782
+    base_train_images: 38777
+    base_train_positives: 898
+    feedback_patients: 1754
+    feedback_images: 4243
+    feedback_positives: 97
+    replay_images_per_set: 4243
+    replay_positives_per_set: 97
+
+feedback:
+  schema_version: 1
+  source: simulated_oracle_manifest_label
+  decision_values: [agree, disagree]
+  corrected_label_values: [0, 1]
+
+pre_training:
+  epochs: 5
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  freeze_backbone_epochs: 1
+  validation_monitor_threshold: 0.50
+  checkpoint_metric: roc_auc
+  deterministic: true
+
+adaptation_training:
+  epochs: 3
+  learning_rate: 0.00001
+  weight_decay: 0.0001
+  validation_monitor_threshold: 0.50
+  checkpoint_metric: roc_auc
+  deterministic: true
+  trainable_prefixes:
+    - image_encoder.features.denseblock4
+    - image_encoder.features.norm5
+    - image_projection
+    - metadata_encoder
+    - classifier
+
+threshold_selection:
+  split: val
+  metric: f1
+  tie_break: lowest_threshold
+  grid: [0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40, 0.45, 0.50, 0.55, 0.60, 0.65, 0.70, 0.75, 0.80, 0.85, 0.90]
+
+bootstrap:
+  resamples: 1000
+  confidence_level: 0.95
+  seed: 42
+  stratified: true
+
+output:
+  partition_manifest: outputs/e10_data/e10_partition_manifest.csv
+  partition_metadata: outputs/e10_data/e10_partition_metadata.json
+  pre_manifest: outputs/e10_data/e10_pre_manifest.csv
+  control_manifest: outputs/e10_data/e10_control_manifest.csv
+  feedback_manifest: outputs/e10_data/e10_feedback_manifest.csv
+  pre_checkpoint: outputs/checkpoints/e10_pre_feedback_densenet121.pt
+  pre_training_metrics: outputs/metrics/e10_pre_feedback_training_metrics.csv
+  pre_run_metadata: outputs/metrics/e10_pre_feedback_run_metadata.json
+  control_checkpoint: outputs/checkpoints/e10_no_feedback_control_densenet121.pt
+  control_training_metrics: outputs/metrics/e10_no_feedback_control_training_metrics.csv
+  control_run_metadata: outputs/metrics/e10_no_feedback_control_run_metadata.json
+  feedback_checkpoint: outputs/checkpoints/e10_feedback_adapted_densenet121.pt
+  feedback_training_metrics: outputs/metrics/e10_feedback_adapted_training_metrics.csv
+  feedback_run_metadata: outputs/metrics/e10_feedback_adapted_run_metadata.json
+  pre_val_predictions: outputs/predictions/e10_pre_feedback_val_predictions.csv
+  pre_val_metrics: outputs/metrics/e10_pre_feedback_val_metrics.csv
+  pre_threshold_analysis: outputs/metrics/e10_pre_feedback_val_threshold_analysis.csv
+  pre_feedback_lock: outputs/metrics/e10_pre_feedback_lock.json
+  feedback_pool_predictions: outputs/e10_feedback/e10_feedback_pool_predictions.csv
+  simulated_feedback: outputs/e10_feedback/e10_simulated_feedback.csv
+  feedback_lock: outputs/e10_feedback/e10_feedback_lock.json
+  control_val_predictions: outputs/predictions/e10_no_feedback_control_val_predictions.csv
+  control_val_metrics: outputs/metrics/e10_no_feedback_control_val_metrics.csv
+  control_threshold_analysis: outputs/metrics/e10_no_feedback_control_val_threshold_analysis.csv
+  feedback_val_predictions: outputs/predictions/e10_feedback_adapted_val_predictions.csv
+  feedback_val_metrics: outputs/metrics/e10_feedback_adapted_val_metrics.csv
+  feedback_threshold_analysis: outputs/metrics/e10_feedback_adapted_val_threshold_analysis.csv
+  validation_lock: outputs/metrics/e10_validation_lock.json
+  pre_test_predictions: outputs/predictions/e10_pre_feedback_test_predictions.csv
+  pre_test_metrics: outputs/metrics/e10_pre_feedback_test_metrics.csv
+  control_test_predictions: outputs/predictions/e10_no_feedback_control_test_predictions.csv
+  control_test_metrics: outputs/metrics/e10_no_feedback_control_test_metrics.csv
+  feedback_test_predictions: outputs/predictions/e10_feedback_adapted_test_predictions.csv
+  feedback_test_metrics: outputs/metrics/e10_feedback_adapted_test_metrics.csv
+  test_comparison: outputs/metrics/e10_test_comparison.csv
+  bootstrap_intervals: outputs/metrics/e10_bootstrap_intervals.csv

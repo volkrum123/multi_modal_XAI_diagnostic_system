@@ -553,3 +553,69 @@ Perturbations are applied deterministically to the source RGB image before the b
 E9 remains a retrospective, binary, single-dataset robustness experiment. It does not establish robustness to external institutions, scanners or populations, does not compare ICEA, and does not constitute clinical validation.
 
 
+
+E10 — Simulated feedback adaptation with continued-training control
+
+
+
+E10 tests whether training-label feedback adaptation changes the DenseNet-121 classifier relative to both its pre-feedback state and an exposure-matched continuation control. The experiment uses simulated oracle feedback derived from existing training-manifest labels. It is not clinician feedback, does not test localisation, and does not modify or train on the four retained E4 cases because those cases belong to the held-out test split.
+
+
+
+The deterministic preparation stage partitions original training patients 90/10 using seed 42 and patient-level positive-label stratification. Validation and test assignments remain unchanged. The two continuation arms each contain 8,486 images with matching target composition and start from the exact same pre-feedback checkpoint. Early DenseNet layers remain frozen during the three continuation epochs.
+
+
+
+Run the non-training contract checks first:
+
+`py -m unittest discover -s tests -p "test_e10_contracts.py" -v`
+
+
+
+Prepare and hash-lock the patient split and arm manifests:
+
+`py -m src.evaluate_e10 --config config_e10.yaml --stage prepare`
+
+
+
+Training is deliberately user-started. First train the five-epoch pre-feedback model:
+
+`py -m src.train_e10 --config config_e10.yaml --arm pre`
+
+
+
+Lock its validation threshold and generate the training-only simulated feedback records:
+
+`py -m src.evaluate_e10 --config config_e10.yaml --stage feedback`
+
+
+
+Train the two matched three-epoch continuation arms separately:
+
+`py -m src.train_e10 --config config_e10.yaml --arm control`
+
+`py -m src.train_e10 --config config_e10.yaml --arm feedback`
+
+
+
+Lock both continuation thresholds using validation F1 only:
+
+`py -m src.evaluate_e10 --config config_e10.yaml --stage val`
+
+
+
+Only after reviewing the three-arm validation lock should the held-out test stage be run once:
+
+`py -m src.evaluate_e10 --config config_e10.yaml --stage test`
+
+
+
+Finally, calculate paired, class-stratified 1,000-resample bootstrap intervals without further model inference:
+
+`py -m src.evaluate_e10 --config config_e10.yaml --stage summarize`
+
+
+
+Every E10 scientific output uses an isolated `e10_*` filename and existing outputs are never overwritten. Archive a complete evidence set before any formally approved rerun. E10 supports a narrow claim about simulated label-feedback adaptation in a retrospective binary single-dataset experiment; it cannot establish human-in-the-loop clinical benefit, adaptability to clinician corrections, infiltrate localisation, external generalisation, or deployment safety.
+
+

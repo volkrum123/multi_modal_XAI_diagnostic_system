@@ -1,0 +1,2 @@
+experiment,arm,model,split,n,positive_n,negative_n,threshold,accuracy,precision,recall,sensitivity,specificity,f1,roc_auc,pr_auc,tn,fp,fn,tp
+E10,feedback,Simulated-feedback adapted DenseNet-121,val,9446,208,9238,0.75,0.9066271437645564,0.09785202863961814,0.3942307692307692,0.3942307692307692,0.9181641047845854,0.15678776290630975,0.7923777416024116,0.07134354552674432,8482,756,126,82
